@@ -1,4 +1,4 @@
-/*11/27/19
+/*12/1/19
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -53,16 +53,17 @@ import com.google.gson.reflect.*;
 public class WeatherPlantWater extends Application {
  HBox welcomeBox;
  
- //put pictures in gridpane
- // Team Assignment 4 = Modularization with API
+ 
+ // Team Assignment 4 = ask about Modularization
  //Team Assignment 5 = Test & show Test
  //Team Assignment 6 = video showing interface
     
 //Buttons
+int k;
 public int j =3;
-Button waterButton;
-Button waterButton2;
-Button waterButton3;
+Button waterButton=new Button("Water");
+Button waterButton2=new Button("Water");
+Button waterButton3=new Button("Water");
 public Button flowersbutton;
 
 ImageView flower1View;
@@ -131,81 +132,7 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
     
     }
     
-    /*public void apiHandler(String apiCall){
-        try{
-              StringBuilder result = new StringBuilder();
-              URL url = new URL(urlString);
-              URLConnection conn = url.openConnection();
-              try (BufferedReader rd = new BufferedReader(new InputStreamReader (conn.getInputStream()))) {
-                  String line;
-                  while ((line = rd.readLine()) != null){
-                      result.append(line);
-                  }
-              }
-              
-          Map<String, Object > respMap = jsonToMap (result.toString());
-          Map<String, Object > mainMap = (Map<String, Object >)respMap.get("main");
-          Map<String, Object > sysMap = (Map<String, Object >)respMap.get("sys");
-          String  nameMap = (String) respMap.get("name");
-          List<Map<String, Object >> weather = (List<Map<String, Object>>) (respMap.get("weather"));
-          Map<String, Object> weatherMap = weather.get(0);
-          
-         CityLabel.setText("City: " + nameMap); 
-         CountryLabel.setText("Country: " + sysMap.get("country"));         
-         WeatherDescriptionLabel.setText("Weather Description: "+ weatherMap.get("main"));          
-         TemperatureLabel.setText("Current Temperature: " + mainMap.get("temp") +" F" );
-         
-         //use weather input to conver to  range of index from 0-1, depending on weather conditions
-         Object description =  weatherMap.get("main");
-        if (description.equals("Thunderstorm") || description.equals("Snow")||description.equals("Rain") || description.equals("Drizzle") ){
-            k=1;
-        }            
-        else{
-            k=0;
-        }
-          
-        //Create Button to complete watering & event handlers to press once you have watered
-        waterButton = new Button("Water");
-        
-        waterButton.setOnAction((EventHandler<ActionEvent>) new WaterButtonHandlerRose());
-      
-        //Create Button to complete watering
-        waterButton2 = new Button("Water");
-        waterButton2.setOnAction((EventHandler<ActionEvent>) new WaterButtonHandlerMarigold());
-        
-        //Create Button to complete watering
-        waterButton3 = new Button("Water");
-        waterButton3.setOnAction((EventHandler<ActionEvent>) new WaterButtonHandlerPetunia());
-          
-        
-       //weather conditions require water
-       if (k == 0){
-                           
-       
-        //Flower 1 Time to Water
-       waterButton.setStyle("-fx-base: blue");
-      
-       //Flower 2 Time to Water
-       waterButton2.setStyle("-fx-base: blue");
-  
-       //Flower 3 Time to Water
-       waterButton3.setStyle("-fx-base: blue");
-                    }
-     //weather conditions don't require watering
-     else if (k==1){
     
-   
-    //Do not need to water any plants today due to weather conditions
-         waterButton.setStyle("-fx-base: green");
-        waterButton2.setStyle("-fx-base: green");
-        waterButton3.setStyle("-fx-base: green");
-  
-                    }
-          }catch (IOException e){
-              System.out.println(e.getMessage());
-          }
-    }
-    */
     @Override
     public void start(Stage primaryStage)
     {
@@ -222,19 +149,29 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
          if(location.equals("Fresno, US")){
                 LOCATION="fresno,us";
                 urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATION + "&appid=" + API_KEY + "&units=imperial";
-                hello.apiHandle(urlString); 
+                k=hello.apiHandle(urlString); 
             }
         else{
                 LOCATION = "denver,us";
                 urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATION + "&appid=" + API_KEY + "&units=imperial";
-                hello.apiHandle(urlString); 
+                k=hello.apiHandle(urlString); 
             }
-            
-            
+       
       
         });
           hello.apiHandle(urlString);                        
-         
+         //Create Button to complete watering & event handlers to press once you have watered
+        //waterButton= new Button("Water");
+        
+        waterButton.setOnAction((EventHandler<ActionEvent>) new WaterButtonHandlerRose());
+      
+        //Create Button to complete watering
+        //waterButton2 = new Button("Water");
+        waterButton2.setOnAction((EventHandler<ActionEvent>) new WaterButtonHandlerMarigold());
+        
+        //Create Button to complete watering
+        //waterButton3 = new Button("Water");
+        waterButton3.setOnAction((EventHandler<ActionEvent>) new WaterButtonHandlerPetunia());
          
         
       //styling for flower labels
@@ -273,8 +210,8 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
        selectflowersLabel.setUnderline(true);
        
         //hbox for flower images
-        HBox hbox = new HBox(10, flower1View, flower2View,flower3View);
-        hbox.setPadding(new Insets(10));
+       // HBox hbox = new HBox(10, flower1View, flower2View,flower3View);
+       // hbox.setPadding(new Insets(10));
         
       
         
@@ -307,6 +244,16 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
         waterLabel.setStyle("-fx-font-size:12pt");
        
        
+        //GridPane for flower images
+        GridPane flowerpicspane = new GridPane();
+        flowerpicspane.add(flower1View,32,1);//5
+        flowerpicspane.add(flower2View, 35, 1);//21
+        flowerpicspane.add(flower3View,38,1);//36
+        flowerpicspane.setVgap(5);
+        flowerpicspane.setHgap(10);
+        flowerpicspane.setPadding(new Insets(20));
+        
+        
         //GridPane for watering buttons
         GridPane gridpane = new GridPane();
         gridpane.add(waterButton,37,1);//5
@@ -367,7 +314,7 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
      
       //Add controls to Final VBox
       vbox1 = new VBox(10, welcomeBox,vbox2,flowershbox,rosehbox, marigoldhbox,petuniahbox, 
-              daffodilhbox, sunflowerhbox,flowersbuttonhbox, totallabelhbox, hbox, flowerlabelpane,
+              daffodilhbox, sunflowerhbox,flowersbuttonhbox, totallabelhbox, flowerpicspane, flowerlabelpane,
               gridpane, waterLabel, weatherdataLabel, hbox4, WeatherDescriptionLabel, TemperatureLabel);
                
       vbox1.setAlignment(Pos.CENTER);
@@ -405,9 +352,9 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
         @Override
         public void handle(ActionEvent event)
         {   //fix once add aarsh's code maybe as an extra class??
-        
+        if(!(image1 == null)){
                waterButton.setStyle("-fx-base: green");
-           
+        }
 }
 }
      class WaterButtonHandlerMarigold implements EventHandler<ActionEvent> 
@@ -415,9 +362,10 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
         @Override
         public void handle(ActionEvent event)
         {   
-            
-           
+        if(!(image2 == null)){
                waterButton2.setStyle("-fx-base: green");
+        }
+               
            
 }
 }
@@ -429,11 +377,14 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
         public void handle(ActionEvent event)
         {   
             
-           
+          
+        if(!(image3 == null)){
                waterButton3.setStyle("-fx-base: green");
+        }
+               
            
 }
-}  
+} 
   
   class FlowersButtonHandler implements EventHandler<ActionEvent>
    {
@@ -482,6 +433,29 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
               totalLabel.setText(String.format("Please select 3 flower options.")); //error if select more/less than 3 flowers
           }
           if(result==3){
+              //weather conditions require water
+       if (k == 0){
+                           
+       
+        //Flower 1 Time to Water
+       waterButton.setStyle("-fx-base: blue");
+      
+       //Flower 2 Time to Water
+       waterButton2.setStyle("-fx-base: blue");
+  
+       //Flower 3 Time to Water
+       waterButton3.setStyle("-fx-base: blue");
+                    }
+     //weather conditions don't require watering
+     else if (k==1){
+    
+   
+    //Do not need to water any plants today due to weather conditions
+        waterButton.setStyle("-fx-base: green");
+        waterButton2.setStyle("-fx-base: green");
+        waterButton3.setStyle("-fx-base: green");
+  
+                    }
           //set labels to flowers selected
           flower1Label.setText(ar.get(0));
           flower2Label.setText(ar.get(1));
@@ -504,9 +478,7 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
           }
    }
    }
+
     
     
 }
-
-
-
