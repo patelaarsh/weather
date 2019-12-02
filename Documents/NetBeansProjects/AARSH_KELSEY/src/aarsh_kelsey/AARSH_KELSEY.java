@@ -1,4 +1,4 @@
-/*11/24/19
+/*11/27/19
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -51,35 +51,45 @@ import com.google.gson.reflect.*;
  * @author Kelsey
  */
 public class WeatherPlantWater extends Application {
+ HBox welcomeBox;
  
- //need to figure out how to extract city from combobox,
- //figure out why images aren't showing up
+ //put pictures in gridpane
  // Team Assignment 4 = Modularization with API
  //Team Assignment 5 = Test & show Test
  //Team Assignment 6 = video showing interface
     
 //Buttons
-public Button waterButton;
-public Button waterButton2;
-public Button waterButton3;
+public int j =3;
+Button waterButton;
+Button waterButton2;
+Button waterButton3;
 public Button flowersbutton;
 
+ImageView flower1View;
+ImageView flower2View;
+ImageView flower3View;
 
+
+
+VBox vbox1;
 //Labels
 
-public Label CountryLabel;
-public Label CityLabel;
-public Label WeatherDescriptionLabel;
-public Label TemperatureLabel;
-public Label flower1Label;
-public Label flower2Label;
-public Label flower3Label;
+public static Label CountryLabel = new Label();
+public static Label CityLabel = new Label();
+public static Label WeatherDescriptionLabel = new Label();
+public static Label TemperatureLabel = new Label();
+public Label flower1Label = new Label();
+public Label flower2Label = new Label();
+public Label flower3Label = new Label();
  public Label selectcityLabel;
  public Label selectflowersLabel;
  
 String img1text;
 String img2text;
 String img3text;
+
+
+
 
  //Flower CheckBox
  CheckBox roseCheckBox;
@@ -92,12 +102,16 @@ String img3text;
  Image image1;
  Image image2;
  Image image3;
+ 
 
  //Constants for the ListView dimensions
-        final double Width = 1100.0, Height = 300.0;
-        final double FONT_SIZE = 20; 
-        final double FONT = 50;
-//String LOCATION;
+ final double Width = 1100.0, Height = 300.0;
+ final double FONT_SIZE = 20; 
+ final double FONT = 50;
+ 
+String LOCATION="fresno,us";
+String API_KEY = "14bc3c13c84f557708d9ecc439e10171";
+String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATION + "&appid=" + API_KEY + "&units=imperial";
  
  
 
@@ -110,48 +124,15 @@ String img3text;
         
     public static void main(String[] args) 
     {
-       
+      
            
         //Launch the application
         launch(args);
     
     }
     
-    @Override
-    public void start(Stage primaryStage)
-    {
-        
-       
-        //ComboBox for Selecting city for weather api
-        ComboBox<String> locationComboBox1 = new ComboBox<>();
-        locationComboBox1.getItems().addAll("Fresno, US","Denver, US");
-       
-        locationComboBox1.setOnAction(event->
-        {
-           String location = locationComboBox1.getValue();
-              
-         /*if(location.equals("Fresno, US")){
-                LOCATION="fresno,us";
-             }
-        else{
-                LOCATION = "denver,us";
-            }*/
-            
-            
-     
-            
-        });
-        
-       
-        
-    
-
-
-          String API_KEY = "14bc3c13c84f557708d9ecc439e10171";
-         String LOCATION = "fresno,us";
-          String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATION + "&appid=" + API_KEY + "&units=imperial";                         
-         
-         try{
+    /*public void apiHandler(String apiCall){
+        try{
               StringBuilder result = new StringBuilder();
               URL url = new URL(urlString);
               URLConnection conn = url.openConnection();
@@ -169,34 +150,13 @@ String img3text;
           List<Map<String, Object >> weather = (List<Map<String, Object>>) (respMap.get("weather"));
           Map<String, Object> weatherMap = weather.get(0);
           
-         
-          //labels for display at the end for city, country, weather, weatherdescription, temperature
-       
-         CityLabel = new Label();
-         CountryLabel = new Label();
-         WeatherDescriptionLabel= new Label();
-         TemperatureLabel = new Label();
-                 
          CityLabel.setText("City: " + nameMap); 
          CountryLabel.setText("Country: " + sysMap.get("country"));         
          WeatherDescriptionLabel.setText("Weather Description: "+ weatherMap.get("main"));          
          TemperatureLabel.setText("Current Temperature: " + mainMap.get("temp") +" F" );
          
-       //Labels for flowers
-        flower1Label = new Label();
-        flower2Label = new Label();
-        flower3Label = new Label();
-       
-      //styling for flower labels
-       flower1Label.setStyle("-fx-font-size:24pt");
-        flower2Label.setStyle("-fx-font-size:24pt");
-        flower3Label.setStyle("-fx-font-size:24pt");
-      
-       
-        
-        //use weather input to conver to  range of index from 0-1, depending on weather conditions
-        int k;
-        Object description =  weatherMap.get("main");
+         //use weather input to conver to  range of index from 0-1, depending on weather conditions
+         Object description =  weatherMap.get("main");
         if (description.equals("Thunderstorm") || description.equals("Snow")||description.equals("Rain") || description.equals("Drizzle") ){
             k=1;
         }            
@@ -244,23 +204,53 @@ String img3text;
           }catch (IOException e){
               System.out.println(e.getMessage());
           }
-             
-   
-
-
-
+    }
+    */
+    @Override
+    public void start(Stage primaryStage)
+    {
+        apiHandler hello = new apiHandler();
        
+        //ComboBox for Selecting city for weather api
+        ComboBox<String> locationComboBox1 = new ComboBox<>();
+        locationComboBox1.getItems().addAll("Fresno, US","Denver, US");
+       
+        locationComboBox1.setOnAction(event->
+        {
+           String location = locationComboBox1.getValue();
+              
+         if(location.equals("Fresno, US")){
+                LOCATION="fresno,us";
+                urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATION + "&appid=" + API_KEY + "&units=imperial";
+                hello.apiHandle(urlString); 
+            }
+        else{
+                LOCATION = "denver,us";
+                urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATION + "&appid=" + API_KEY + "&units=imperial";
+                hello.apiHandle(urlString); 
+            }
+            
+            
+      
+        });
+          hello.apiHandle(urlString);                        
+         
+         
+        
+      //styling for flower labels
+       flower1Label.setStyle("-fx-font-size:24pt");
+        flower2Label.setStyle("-fx-font-size:24pt");
+        flower3Label.setStyle("-fx-font-size:24pt");
+      
        //Create Flower Image objects
        
        
         
         //Create Flower ImageView objects
-        ImageView flower1View = new ImageView(image1);
-        ImageView flower2View = new ImageView(image2);
-        ImageView flower3View = new ImageView(image3);
-
-        
-        //Resize flower images
+        flower1View = new ImageView();
+        flower2View = new ImageView();
+        flower3View = new ImageView();
+           //Resize flower images
         flower1View.setFitWidth(200);
         flower1View.setPreserveRatio(true);
         
@@ -269,8 +259,6 @@ String img3text;
         
         flower3View.setFitWidth(200);
         flower3View.setPreserveRatio(true);
-        
-        
         
         //Label for city combobox
         selectcityLabel = new Label();
@@ -308,7 +296,7 @@ String img3text;
         welcomeText.setFill(Color.CORNFLOWERBLUE);
 
         //Hbox for Title Text
-        HBox welcomeBox = new HBox(10, welcomeText);
+        welcomeBox = new HBox(10, welcomeText);
         welcomeBox.setAlignment(Pos.CENTER);
        
         //Label for instructions on clicking buttons for watering
@@ -378,7 +366,7 @@ String img3text;
 
      
       //Add controls to Final VBox
-      VBox vbox1 = new VBox(10, welcomeBox,vbox2,flowershbox,rosehbox, marigoldhbox,petuniahbox, 
+      vbox1 = new VBox(10, welcomeBox,vbox2,flowershbox,rosehbox, marigoldhbox,petuniahbox, 
               daffodilhbox, sunflowerhbox,flowersbuttonhbox, totallabelhbox, hbox, flowerlabelpane,
               gridpane, waterLabel, weatherdataLabel, hbox4, WeatherDescriptionLabel, TemperatureLabel);
                
@@ -409,6 +397,7 @@ String img3text;
         //Show the window
         primaryStage.show();        
     }
+    
     
     class WaterButtonHandlerRose implements EventHandler<ActionEvent> 
     {
@@ -445,6 +434,7 @@ String img3text;
            
 }
 }  
+  
   class FlowersButtonHandler implements EventHandler<ActionEvent>
    {
        @Override
@@ -499,16 +489,24 @@ String img3text;
           
           img1text =(ar.get(0));
           img2text = (ar.get(1));
-         img3text= (ar.get(2));
+          img3text= (ar.get(2));
           
           image1 = new Image("file:" + img1text + ".jpg");
           image2 = new Image("file:" + img2text + ".jpg");
-          image3 = new Image("file:" + img3text + ".jpg");
+          image3 = new Image("file:" + img3text + ".jpg");//"file:Rose.jpg
           
+          //Create Flower ImageView objects
+        flower1View.setImage(image1);
+        flower2View.setImage(image2);
+        flower3View.setImage(image3);
+          
+        
           }
    }
    }
     
     
 }
+
+
 
