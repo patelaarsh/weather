@@ -1,9 +1,19 @@
-/*12/1/19
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 package weatherplantwater;
+
+/**
+ *
+ * @author Aarsh
+ */
+/*12/1/19
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 //imports for java fx user interface
 import java.util.HashMap;
@@ -384,7 +394,7 @@ String urlString = "http://api.openweathermap.org/data/2.5/weather?q=" + LOCATIO
                
            
 }
-} 
+} //start 
   
   class FlowersButtonHandler implements EventHandler<ActionEvent>
    {
